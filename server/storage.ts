@@ -1,10 +1,12 @@
 import { users, type User, type InsertUser } from "@shared/schema";
 import { prescriptions, type Prescription, type InsertPrescription } from "@shared/schema";
 import { db } from "./db";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
+import session from "express-session";
+import connectPg from "connect-pg-simple";
+import { pool } from "./db";
 
-// modify the interface with any CRUD methods
-// you might need
+const PostgresSessionStore = connectPg(session);
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -12,51 +14,43 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   createPrescription(prescription: InsertPrescription): Promise<Prescription>;
   getRecentPrescriptions(limit?: number): Promise<Prescription[]>;
-}
-
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  currentId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.currentId = 1;
-  }
-
-  async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
-  }
-  async createPrescription(prescription: InsertPrescription): Promise<Prescription> {
-    throw new Error("Method not implemented.");
-  }
-  async getRecentPrescriptions(limit?: number): Promise<Prescription[]> {
-    throw new Error("Method not implemented.");
-  }
+  sessionStore: session.Store;
 }
 
 export class DatabaseStorage implements IStorage {
+  sessionStore: session.Store;
+
+  constructor() {
+    this.sessionStore = new PostgresSessionStore({
+      pool,
+      createTableIfMissing: true,
+    });
+  }
+
   async getUser(id: number): Promise<User | undefined> {
-    throw new Error("Method not implemented.");
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, id));
+    return user;
   }
+
   async getUserByUsername(username: string): Promise<User | undefined> {
-    throw new Error("Method not implemented.");
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, username));
+    return user;
   }
+
   async createUser(user: InsertUser): Promise<User> {
-    throw new Error("Method not implemented.");
+    const [created] = await db
+      .insert(users)
+      .values(user)
+      .returning();
+    return created;
   }
+
   async createPrescription(prescription: InsertPrescription): Promise<Prescription> {
     const [created] = await db
       .insert(prescriptions)

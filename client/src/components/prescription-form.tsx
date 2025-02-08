@@ -23,7 +23,7 @@ interface PrescriptionFormProps {
 }
 
 const defaultValues: FormData = {
-  weight: undefined,
+  weight: 0,
   category: "adult"
 };
 
