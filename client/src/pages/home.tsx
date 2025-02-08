@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PrescriptionForm } from "@/components/prescription-form";
 import { PrescriptionResult } from "@/components/prescription-result";
+import { PrescriptionHistory } from "@/components/prescription-history";
 import { calculatePrescription, type PrescriptionResult as PrescriptionResultType } from "@/lib/calculator";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { queryClient } from "@/lib/queryClient";
 
 export default function Home() {
   const [result, setResult] = useState<PrescriptionResultType | null>(null);
@@ -22,6 +24,8 @@ export default function Home() {
           category: data.category,
           totalCost: prescription.breakdown.total
         });
+        // Invalidate prescriptions query to refresh the list
+        queryClient.invalidateQueries({ queryKey: ["/api/prescriptions"] });
       } catch (error) {
         toast({
           variant: "destructive",
@@ -62,6 +66,10 @@ export default function Home() {
               <PrescriptionResult result={result} />
             </div>
           )}
+
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <PrescriptionHistory />
+          </div>
         </div>
       </div>
     </div>
