@@ -19,16 +19,24 @@ type FormData = z.infer<typeof formSchema>;
 
 interface PrescriptionFormProps {
   onCalculate: (data: FormData) => void;
+  onReset: () => void;
 }
 
-export function PrescriptionForm({ onCalculate }: PrescriptionFormProps) {
+const defaultValues: FormData = {
+  weight: undefined,
+  category: "adult"
+};
+
+export function PrescriptionForm({ onCalculate, onReset }: PrescriptionFormProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      weight: undefined,
-      category: "adult"
-    }
+    defaultValues
   });
+
+  const handleReset = () => {
+    form.reset(defaultValues);
+    onReset();
+  };
 
   return (
     <Form {...form}>
@@ -109,7 +117,7 @@ export function PrescriptionForm({ onCalculate }: PrescriptionFormProps) {
             type="button" 
             variant="outline" 
             className="flex-1"
-            onClick={() => form.reset()}
+            onClick={handleReset}
           >
             Reset
           </Button>

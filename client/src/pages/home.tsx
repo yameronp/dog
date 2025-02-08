@@ -38,6 +38,11 @@ export default function Home() {
     }
   };
 
+  const handleReset = () => {
+    setResult(null);
+    setDogDetails(null);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="container mx-auto px-4 py-8">
@@ -59,7 +64,7 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <PrescriptionForm onCalculate={handleCalculate} />
+              <PrescriptionForm onCalculate={handleCalculate} onReset={handleReset} />
             </CardContent>
           </Card>
 
