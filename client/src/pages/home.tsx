@@ -10,11 +10,13 @@ import { queryClient } from "@/lib/queryClient";
 
 export default function Home() {
   const [result, setResult] = useState<PrescriptionResultType | null>(null);
+  const [dogDetails, setDogDetails] = useState<{ weight: number; category: string } | null>(null);
   const { toast } = useToast();
 
   const handleCalculate = async (data: { weight: number; category: 'adult' | 'puppy' | 'nursing' }) => {
     const prescription = calculatePrescription(data.weight, data.category);
     setResult(prescription);
+    setDogDetails(data);
 
     if (!prescription.isOverweight) {
       try {
@@ -61,9 +63,9 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {result && (
+          {result && dogDetails && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <PrescriptionResult result={result} />
+              <PrescriptionResult result={result} dogDetails={dogDetails} />
             </div>
           )}
 
