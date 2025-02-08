@@ -28,27 +28,43 @@ export function calculatePrescription(weight: number, category: DogCategory): Pr
   let tapewormDrops = 0;
   let isOverweight = false;
 
+  // Check for overweight condition for all categories
+  if (weight >= 40) {
+    isOverweight = true;
+    return {
+      promaxTablets: 0,
+      promaxJuniorTablets: 0,
+      promaxNursingTablets: 0,
+      tapewormDrops: 0,
+      isOverweight: true,
+      breakdown: {
+        medications: [],
+        prescriptionCharge: 0,
+        total: 0
+      }
+    };
+  }
+
   if (category === 'adult') {
-    if (weight >= 40) {
-      isOverweight = true;
-    } else if (weight >= 35) {
-      promaxTablets = 6;
-    } else if (weight >= 30) {
-      promaxTablets = 5;
-    } else if (weight >= 25) {
-      promaxTablets = 4;
-    } else if (weight >= 20) {
-      promaxTablets = 3;
-    } else if (weight >= 10) {
-      promaxTablets = 2;
-    } else {
+    if (weight < 10) {
       promaxTablets = 1;
+    } else if (weight < 20) {
+      promaxTablets = 2;
+    } else if (weight < 25) {
+      promaxTablets = 3;
+    } else if (weight < 30) {
+      promaxTablets = 4;
+    } else if (weight < 35) {
+      promaxTablets = 5;
+    } else if (weight < 40) {
+      promaxTablets = 6;
     }
   } else if (category === 'puppy') {
     promaxJuniorTablets = 1;
   } else if (category === 'nursing') {
+    // Calculate nursing tablets (1 per 5kg, minimum 1)
     promaxNursingTablets = Math.max(1, Math.floor(weight / 5));
-    tapewormDrops = 1;
+    tapewormDrops = 1; // Always include 1 tapeworm drop for nursing
   }
 
   const medications = [
