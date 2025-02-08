@@ -3,13 +3,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PrescriptionForm } from "@/components/prescription-form";
 import { PrescriptionResult } from "@/components/prescription-result";
 import { calculatePrescription, type PrescriptionResult as PrescriptionResultType } from "@/lib/calculator";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
   const [result, setResult] = useState<PrescriptionResultType | null>(null);
+  const { toast } = useToast();
 
-  const handleCalculate = (data: { weight: number; category: 'adult' | 'puppy' | 'nursing' }) => {
+  const handleCalculate = async (data: { weight: number; category: 'adult' | 'puppy' | 'nursing' }) => {
     const prescription = calculatePrescription(data.weight, data.category);
     setResult(prescription);
+
+    if (!prescription.isOverweight) {
+      try {
+        await apiRequest('POST', '/api/prescriptions', {
+          ...prescription,
+          weight: data.weight,
+          category: data.category,
+          totalCost: prescription.breakdown.total
+        });
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to save prescription. Please try again."
+        });
+      }
+    }
   };
 
   return (
