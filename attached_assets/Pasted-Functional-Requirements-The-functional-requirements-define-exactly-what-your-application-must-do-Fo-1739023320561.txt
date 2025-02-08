@@ -1,0 +1,142 @@
+Functional Requirements
+The functional requirements define exactly what your application must do. For this project, the features are centered on data input, processing (calculations), and output display.
+
+User Input and Data Collection
+
+Weight Input:
+A numeric input field for entering the dog’s weight (in kilograms) with validation to accept only positive numbers.
+Provide inline hints (e.g., “Enter a number greater than 0”) to guide the user.
+Category Selection:
+A set of radio buttons or a dropdown allowing the user to select one of three categories:
+Adult Dog
+Puppy (under 12 weeks)
+Nursing Bitch
+Each option should include a brief tooltip or description explaining the category if needed.
+Calculation Logic
+
+Dosage Determination:
+Adult Dogs: Based on the weight ranges:
+Less than 10 kg → 1 Promax tablet.
+10 kg to <20 kg → 2 Promax tablets.
+20 kg to <25 kg → 3 Promax tablets.
+25 kg to <30 kg → 4 Promax tablets.
+30 kg to <35 kg → 5 Promax tablets.
+35 kg to <40 kg → 6 Promax tablets.
+40 kg or more → Display an alert that the dog may be overweight (and no prescription is issued).
+Puppies (under 12 weeks):
+Automatically assign 1 Promax Junior Tablet regardless of weight.
+Nursing Bitches:
+Calculate the number of Promax Nursing Tablets as 1 per 5 kg (using integer division, ensuring at least one tablet) and automatically include 1 tapeworm drop.
+Cost Calculation
+
+Price Breakdown:
+Promax Tablet: £1.25 each.
+Promax Junior Tablet: £1.25 each.
+Promax Nursing Tablet: £3.00 each.
+Tapeworm Drop: £3.00 each.
+Add a fixed prescription charge of £4.00.
+Display:
+Show a detailed cost breakdown including the cost per medication type, the prescription charge, and the total cost.
+Output and Feedback
+
+Result Display:
+A dedicated output section where the calculated prescription details (dosage, cost breakdown, alerts) are shown.
+If any errors or special conditions occur (e.g., invalid input, overweight dog), display clear, friendly error messages.
+User Actions:
+A “Calculate” button to trigger the computation.
+A “Reset” button to clear all inputs and outputs.
+Consider a “Print Prescription” option that formats the results into a printable document.
+Unique Functional Ideas
+
+Interactive Hints:
+When the user hovers over each input field or radio button, display small info boxes explaining why each piece of information is needed.
+Live Preview:
+Implement a “live update” feature where the prescription cost is dynamically updated as the user changes the input (using JavaScript events like oninput).
+Data Export:
+Offer an option to download the prescription details as a PDF or email them directly, providing added value for the clinic.
+Non-Functional Requirements
+The non-functional requirements specify how the application should perform and behave. These guidelines ensure the application is not only functional but also reliable, efficient, and user-friendly.
+
+Usability
+
+Intuitive Interface:
+A clean and simple layout with clear labels, adequate spacing, and a logical flow from input to output.
+Use consistent fonts, colors, and styles throughout the application.
+Accessibility:
+Employ semantic HTML (e.g., <header>, <main>, <footer>) for better navigation by screen readers.
+Ensure high-contrast color schemes, alt texts for images, and keyboard navigability for users with disabilities.
+Provide ARIA roles and attributes where necessary to enhance the accessibility experience.
+User Guidance:
+Include brief tooltips or help icons near inputs that explain their purpose.
+Use responsive design techniques so the application works equally well on desktops, tablets, and smartphones.
+Performance
+
+Fast Loading:
+Optimize assets by minifying CSS and JavaScript files.
+Leverage browser caching for static resources to reduce load times on repeat visits.
+Smooth Interactions:
+Ensure that calculation logic executes quickly so that users see instant feedback after clicking “Calculate.”
+Use asynchronous loading for any non-critical resources to improve initial page rendering speed.
+Maintainability
+
+Clean Code Structure:
+Write modular, well-commented code with clear naming conventions for functions and variables.
+Separate concerns by dividing the code into distinct files (HTML, CSS, JavaScript) and, if necessary, into further modules or components.
+Documentation:
+Provide a README file with setup instructions, an overview of the application architecture, and guidelines for future modifications.
+Include inline comments to explain the purpose of complex code blocks.
+Version Control:
+Use a version control system (such as Git) to track changes and manage development history.
+Security
+
+Input Validation:
+Validate all user inputs on the client side (and later, if applicable, on the server side) to prevent injection attacks and ensure data integrity.
+Data Sanitization:
+Sanitize any data used in the DOM to prevent cross-site scripting (XSS) vulnerabilities.
+Secure Hosting:
+When deploying, ensure the website is served over HTTPS to protect data transmission.
+User Privacy:
+If any user data is stored or processed, clearly communicate privacy practices and ensure compliance with relevant data protection regulations.
+Reliability and Robustness
+
+Error Handling:
+Implement comprehensive error handling to capture and gracefully handle unexpected errors, such as network issues or invalid inputs.
+Provide clear, user-friendly error messages and guidance on how to correct issues.
+Cross-Browser Compatibility:
+Test the application on multiple browsers (Chrome, Firefox, Safari, Edge) and ensure consistent behavior.
+Resilience:
+Design the application to handle edge cases gracefully, ensuring that even unusual user inputs do not crash the application.
+Scalability and Extensibility
+
+Modular Design:
+Structure the code in a modular fashion so that new features (e.g., additional animal types, extended prescription options) can be added without rewriting existing code.
+Future-Proofing:
+Use industry-standard design patterns (such as Model-View-Controller) where appropriate, to simplify future expansions.
+Consider a plug-in or component-based architecture that allows independent updates to parts of the application without affecting the whole system.
+Additional Unique Non-Functional Ideas
+
+Analytics and Logging:
+Integrate lightweight analytics to monitor user interactions and gather feedback on usability.
+Log errors or unexpected behavior (locally or via a remote logging service) to aid in troubleshooting and continuous improvement.
+Theming and Customization:
+Offer users the ability to switch between a “light” and “dark” theme for better comfort during different times of the day.
+Allow clinics to brand the application with their logo and colors, enhancing the personalized experience.
+Offline Functionality:
+Explore adding offline support using service workers so that the application can still perform basic functions if the internet connection is interrupted.
+Summary
+Functional Requirements (What the application does):
+
+Collects accurate data (weight and category) with clear, guided input.
+Processes dosage and cost calculations based on defined business rules.
+Provides immediate, detailed prescription details and error messages.
+Offers interactive features such as live updates, tooltips, and printable/downloadable results.
+Non-Functional Requirements (How the application performs and behaves):
+
+Usability: Intuitive design, accessibility enhancements, and responsive layouts.
+Performance: Fast load times, smooth interactions, and optimized asset management.
+Maintainability: Clean, modular, and well-documented code with version control.
+Security: Rigorous input validation, data sanitization, and secure deployment.
+Reliability: Robust error handling, cross-browser compatibility, and graceful degradation.
+Scalability: Modular design, future-proof architecture, and customization capabilities.
+Unique Enhancements: Analytics, theming, offline support, and user personalization options.
+Using these requirements as your blueprint will help you create an application that not only meets the functional needs of calculating worming doses and costs for dogs but also excels in usability, performance, and security. Happy coding!
